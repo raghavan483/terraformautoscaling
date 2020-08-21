@@ -1,80 +1,80 @@
 #This Terraform Code Deploys Basic VPC Infra.
 provider "aws" {
-    #access_key = "${var.aws_access_key}"
-    #secret_key = "${var.aws_secret_key}"
-    region = "${var.aws_region}"
+    access_key = var.aws_access_key
+    secret_key = var.aws_secret_key
+    region = var.aws_region
 }
 
 resource "aws_vpc" "default" {
-    cidr_block = "${var.vpc_cidr}"
+    cidr_block = var.vpc_cidr
     enable_dns_hostnames = true
     tags = {
-        Name = "${var.vpc_name}"
+        Name = var.vpc_name
 	Owner = "Sree"
     }
 }
 
 resource "aws_internet_gateway" "default" {
-    vpc_id = "${aws_vpc.default.id}"
+    vpc_id = aws_vpc.default.id
 	tags = {
-        Name = "${var.IGW_name}"
+        Name = var.IGW_name
     }
 }
 
 resource "aws_subnet" "subnet1-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet1_cidr}"
+    vpc_id = aws_vpc.default.id
+    cidr_block = var.public_subnet1_cidr
     availability_zone = "us-east-1a"
 
     tags = {
-        Name = "${var.public_subnet1_name}"
+        Name = var.public_subnet1_name
     }
 }
 
 resource "aws_subnet" "subnet2-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet2_cidr}"
+    vpc_id = aws_vpc.default.id
+    cidr_block = var.public_subnet2_cidr
     availability_zone = "us-east-1b"
 
     tags = {
-        Name = "${var.public_subnet2_name}"
+        Name = var.public_subnet2_name
     }
 }
 
 resource "aws_subnet" "subnet3-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet3_cidr}"
+    vpc_id = aws_vpc.default.id
+    cidr_block = var.public_subnet3_cidr
     availability_zone = "us-east-1c"
 
     tags = {
-        Name = "${var.public_subnet3_name}"
+        Name = var.public_subnet3_name
     }
 	
 }
 
 
 resource "aws_route_table" "terraform-public" {
-    vpc_id = "${aws_vpc.default.id}"
+    vpc_id = aws_vpc.default.id
 
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.default.id}"
+        gateway_id = aws_internet_gateway.default.id
     }
 
     tags = {
-        Name = "${var.Main_Routing_Table}"
+        Name = var.Main_Routing_Table
     }
 }
 
 resource "aws_route_table_association" "terraform-public" {
-    subnet_id = "${aws_subnet.subnet1-public.id}"
-    route_table_id = "${aws_route_table.terraform-public.id}"
+    subnet_id = aws_subnet.subnet1-public.id
+    route_table_id = aws_route_table.terraform-public.id
 }
 
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow all inbound traffic"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = aws_vpc.default.id
 
   ingress {
     from_port   = 0
@@ -91,30 +91,38 @@ resource "aws_security_group" "allow_all" {
     }
 }
 
+terraform {
+  backend "s3" {
+    bucket = "raghavan483"
+    key    = "prod-terraform-state/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 # data "aws_ami" "my_ami" {
 #      most_recent      = true
 #      #name_regex       = "^mavrick"
 #      owners           = ["721834156908"]
 # }
 
-
-resource "aws_instance" "web-1" {
-    ami = var.imagename
+# 
+# resource "aws_instance" "web-1" {
+    # ami = var.imagename
     #ami = "ami-0d857ff0f5fc4e03b"
-    availability_zone = "us-east-1a"
-    instance_type = "t2.micro"
-    key_name = "LaptopKey"
-    subnet_id = "${aws_subnet.subnet1-public.id}"
-    vpc_security_group_ids = ["${aws_security_group.allow_all.id}"]
-    associate_public_ip_address = true	
-    tags = {
-        Name = "Server-1"
-        Env = "Prod"
-        Owner = "Sree"
-	CostCenter = "ABCD"
-    }
-}
-
+    # availability_zone = "us-east-1a"
+    # instance_type = "t2.micro"
+    # key_name = "LaptopKey"
+    # subnet_id = "${aws_subnet.subnet1-public.id}"
+    # vpc_security_group_ids = ["${aws_security_group.allow_all.id}"]
+    # associate_public_ip_address = true	
+    # tags = {
+        # Name = "Server-1"
+        # Env = "Prod"
+        # Owner = "Sree"
+	# CostCenter = "ABCD"
+    # }
+# }
+# 
 ##output "ami_id" {
 #  value = "${data.aws_ami.my_ami.id}"
 #}
