@@ -11,6 +11,7 @@ resource "aws_vpc" "default" {
     tags = {
         Name = var.vpc_name
 	Owner = "Sree"
+    Prod = "Raghvan"
     }
 }
 
