@@ -6,3 +6,4 @@ important
 *.tfstate
 *.tfstate.*
 
+#.exx
