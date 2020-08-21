@@ -94,7 +94,9 @@ resource "aws_security_group" "allow_all" {
 
 terraform {
   backend "s3" {
+    encrypt = true
     bucket = "raghavan483"
+    dynamodb_table = "terraform-state-lock-dynamo"
     key    = "prod-terraform-state/terraform.tfstate"
     region = "us-east-1"
   }
