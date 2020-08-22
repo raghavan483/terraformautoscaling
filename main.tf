@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "default" {
 
 resource "aws_subnet" "subnets" {
     #count = length(var.CIDRS)
-    count = "${var.env=="prod" ? 6 : 1}"
+    count = var.env!="prod" ? 1 : 6
     vpc_id = aws_vpc.default.id
     cidr_block = element(var.CIDRS,count.index)
     availability_zone = element(var.azs,count.index)
@@ -51,7 +51,7 @@ resource "aws_route_table" "terraform-public" {
 
 resource "aws_route_table_association" "terraform-public" {
     #count = length(var.CIDRS)
-    count = "${var.env=="prod" ? 6 : 1}"
+    count =  var.env!="prod" ? 1 : 6
     subnet_id = element(aws_subnet.subnets.*.id,count.index)
     route_table_id = aws_route_table.terraform-public.id
 }
