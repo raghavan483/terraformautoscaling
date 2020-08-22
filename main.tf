@@ -10,7 +10,7 @@ resource "aws_vpc" "default" {
     enable_dns_hostnames = true
     tags = {
         Name = var.vpc_name
-	Owner = "Sree"
+	Owner = "Sree Harsha veerapalli"
     Prod = "Raghvan"
     }
 }
@@ -78,7 +78,9 @@ resource "aws_security_group" "allow_all" {
 
 terraform {
   backend "s3" {
+    encrypt = true
     bucket = "raghavan483"
+    dynamodb_table = "terraform-state-lock-dynamo"
     key    = "prod-terraform-state/terraform.tfstate"
     region = "us-east-1"
   }
