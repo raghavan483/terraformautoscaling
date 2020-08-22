@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "default" {
 
 resource "aws_subnet" "subnets" {
     #count = length(var.CIDRS)
-    count = "${var.env=="prod" ? 6 : 1}"
+    count = "${var.env=="prod" ? 5 : 1}"
     vpc_id = aws_vpc.default.id
     cidr_block = element(var.CIDRS,count.index)
     availability_zone = element(var.azs,count.index)
