@@ -5,3 +5,6 @@
 *.tfstate
 *.tfstate.*
 *.exe
+dev.tfvars
+dynamodblock.tfstate
+important
