@@ -31,7 +31,7 @@ variable "azs" {
 variable "CIDRS" {
   description = "CIDRS blocks for subnets"
   type    = list
-  default = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24","10.1.4.0/24","10.1.5.0/24","10.1.6.0/24"]
+  default = ["10.2.1.0/24", "10.2.2.0/24", "10.2.3.0/24","10.2.4.0/24","10.2.5.0/24","10.2.6.0/24"]
 }
 variable "env" { }
 variable "instance_type" {
@@ -39,7 +39,7 @@ variable "instance_type" {
   default = {
     dev = "t2.nano"
     test = "t2.micro"
-    prod = "t2.medium"
+    prod = "t2.micro"
     }
 }
 
