@@ -1,9 +1,9 @@
 # Local .terraform directories
 **/.terraform/*
-testfile
-saifile
+testfile.txt
+saifile.txt
 terraform.exe
-raghutestfile
+raghutestfile.txt
 # .tfstate files
 *.tfstate
 *.tfstate.*
