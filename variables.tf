@@ -42,4 +42,13 @@ variable "instance_type" {
     prod = "t2.micro"
     }
 }
-
+variable "server_port" {
+  description = "The port the server will use for HTTP requests"
+  type        = number
+  default     = 8080
+}
+variable "elb_port" {
+  description = "The port the elb will use for HTTP requests"
+  type        = number
+  default     = 443
+}
