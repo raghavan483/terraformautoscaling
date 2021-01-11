@@ -66,4 +66,30 @@ resource "aws_lb_listener" "my-test-alb-listner" {
     target_group_arn = aws_lb_target_group.my-target-group.arn
   }
 }
-
+resource "aws_launch_configuration" "example" {
+  image_id               = "ami-0739f8cdb239fe9ae"
+  instance_type          = "t2.micro"
+  security_groups        = [aws_security_group.allow_all.id]
+  key_name               = "raghavendra"
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p 8080 &
+              EOF
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+## Creating AutoScaling Group
+resource "aws_autoscaling_group" "example" {
+  launch_configuration = aws_launch_configuration.example.id
+   vpc_zone_identifier = aws_subnet.subnets.*.id
+  min_size = 2
+  max_size = 10
+  health_check_type = "ELB"
+  tag {
+    key = "Name"
+    value = "terraform-asg-example"
+    propagate_at_launch = true
+  }
+}
