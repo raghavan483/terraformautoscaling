@@ -128,3 +128,4 @@ terraform {
 # terraform init
 # terraform apply --var-file terraform.tfvars -var="aws_access_key=AAAAAAAAAAAAAAAAAA" -var="aws_secret_key=BBBBBBBBBBBBB" --auto-approve
 #https://discuss.devopscube.com/t/how-to-get-the-ami-id-after-a-packer-build/36
+#pawan kumar
